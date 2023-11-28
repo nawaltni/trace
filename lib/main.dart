@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trace/pages/login.dart';
 import 'package:trace/pages/position.dart';
 
 void main() {
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        // home: LoginPage(),
-        home: const PositionPage());
+        home: LoginPage());
+    // home: const PositionPage());
   }
 }
