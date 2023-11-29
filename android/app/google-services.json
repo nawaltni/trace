@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "259663716394",
+    "project_id": "nawalt-auth",
+    "storage_bucket": "nawalt-auth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:259663716394:android:a646db67f87a4367616353",
+        "android_client_info": {
+          "package_name": "com.nawalt.trace"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMreyBXmcBryAkUm-2MMB3xKp00b7NUzE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
