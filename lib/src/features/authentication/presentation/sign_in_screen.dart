@@ -1,25 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trace/components/my_bottom.dart';
 import 'package:trace/components/my_textfield.dart';
 import 'package:trace/components/square_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:trace/pages/pair.dart';
+import 'package:trace/src/features/authentication/presentation/pair_device_screen.dart';
+import 'package:trace/src/features/authentication/data/firebase_auth_repository.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({Key? key}) : super(key: key);
+class SignInScreen extends ConsumerWidget {
+  SignInScreen({super.key});
 
   // text editing controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  // sign user in method
-  void signUserIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text, password: passwordController.text);
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authRepository = ref.watch(authRepositoryProvider);
+
     return Scaffold(
       backgroundColor: Colors.grey[300],
       body: SafeArea(
@@ -73,7 +71,9 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 25),
               // sign in button
               MyBottom(
-                onTap: signUserIn,
+                onTap: () => authRepository.signInWithEmailAndPassword(
+                    email: emailController.text,
+                    password: passwordController.text),
                 text: 'Sign In',
               ),
               const SizedBox(height: 25),
@@ -128,7 +128,8 @@ class LoginPage extends StatelessWidget {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => PairPage()),
+                          MaterialPageRoute(
+                              builder: (context) => PairDeviceScreen()),
                         );
                       },
                       child: const Text("Click here",

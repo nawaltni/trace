@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:trace/components/my_bottom.dart';
 import 'package:trace/components/my_textfield.dart';
 
-class PairPage extends StatelessWidget {
-  PairPage({super.key});
+class PairDeviceScreen extends StatelessWidget {
+  PairDeviceScreen({super.key});
 
   // text editing controllers
   final codeController = TextEditingController();

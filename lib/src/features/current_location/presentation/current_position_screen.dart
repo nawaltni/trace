@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trace/services/geolocation.dart';
+import 'package:trace/src/features/current_location/data/current_location_repository.dart';
 
 class PositionPage extends StatefulWidget {
   const PositionPage({Key? key}) : super(key: key);
