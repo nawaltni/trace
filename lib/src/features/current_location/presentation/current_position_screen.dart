@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trace/src/features/current_location/data/current_location_repository.dart';
 
-class PositionPage extends StatefulWidget {
-  const PositionPage({Key? key}) : super(key: key);
+class CurrentPositionScreen extends ConsumerStatefulWidget {
+  const CurrentPositionScreen({Key? key}) : super(key: key);
 
   @override
   _PositionState createState() => _PositionState();
 }
 
-class _PositionState extends State<PositionPage> {
+class _PositionState extends ConsumerState<CurrentPositionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,11 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trace/components/my_bottom.dart';
 import 'package:trace/components/my_textfield.dart';
 import 'package:trace/components/square_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:trace/src/features/authentication/presentation/pair_device_screen.dart';
 import 'package:trace/src/features/authentication/data/firebase_auth_repository.dart';
+import 'package:trace/src/routing/app_router.dart';
 
 class SignInScreen extends ConsumerWidget {
   SignInScreen({super.key});
@@ -125,13 +124,7 @@ class SignInScreen extends ConsumerWidget {
                             fontWeight: FontWeight.bold,
                             color: Colors.grey[600])),
                     GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PairDeviceScreen()),
-                        );
-                      },
+                      onTap: () => ref.read(goRouterProvider).go('/pairDevice'),
                       child: const Text("Click here",
                           style: TextStyle(color: Colors.blue)),
                     ),

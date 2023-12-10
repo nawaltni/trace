@@ -20,7 +20,7 @@ final firebaseAuthProvider = Provider<FirebaseAuth>.internal(
 );
 
 typedef FirebaseAuthRef = ProviderRef<FirebaseAuth>;
-String _$authRepositoryHash() => r'3871275ded2762a0e529629be71e890bfd3bd7ad';
+String _$authRepositoryHash() => r'a23817245441044853b75cf4c12cd0f3ac93ed1d';
 
 /// See also [authRepository].
 @ProviderFor(authRepository)

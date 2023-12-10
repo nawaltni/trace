@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:trace/src/features/authentication/data/firebase_auth_repository.dart';
 import 'package:trace/src/features/authentication/presentation/sign_in_screen.dart';
 import 'package:trace/src/features/authentication/presentation/pair_device_screen.dart';
+import 'package:trace/src/features/current_location/presentation/current_position_screen.dart';
 import 'package:trace/src/features/dashboard/presentation/dashboard_screen.dart';
 import 'package:trace/src/routing/go_router_refresh_stream.dart';
 
@@ -16,7 +17,8 @@ enum AppRoute {
   // @initial
   signIn,
   pairDevice,
-  dashboard
+  dashboard,
+  currentLocation,
   // signUp,
   // pairDevice,
   // dashboard,
@@ -32,18 +34,30 @@ GoRouter goRouter(GoRouterRef ref) {
   // final onboardingRepository =
   //     ref.watch(onboardingRepositoryProvider).requireValue;
   return GoRouter(
-    initialLocation: '/signIn',
+    initialLocation: '/dashboard',
     navigatorKey: _rootNavigatorKey,
     debugLogDiagnostics: true,
     redirect: (context, state) {
       print("Redirect triggering");
+
       final isLoggedIn = authRepository.currentUser != null;
+      final onLoginPage = state.fullPath == '/signIn';
+      final onPairDevicePage = state.fullPath == '/pairDevice';
+
       print("isLoggedIn: $isLoggedIn");
-      if (!isLoggedIn) {
+      if (!isLoggedIn && !onPairDevicePage) {
         return '/signIn';
       }
+      if (isLoggedIn && onLoginPage) {
+        print("Redirecting to dashboard from login page");
+        return '/dashboard';
+      }
 
-      return '/dashboard';
+      if (isLoggedIn && onPairDevicePage) {
+        print("Redirecting to dashboard from pair page");
+
+        return '/dashboard';
+      }
 
       return null;
     },
@@ -68,6 +82,13 @@ GoRouter goRouter(GoRouterRef ref) {
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: DashboardScreen()),
       ),
+      GoRoute(
+        path: '/currentLocation',
+        name: AppRoute.currentLocation.name,
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: CurrentPositionScreen(),
+        ),
+      )
     ],
   );
 }

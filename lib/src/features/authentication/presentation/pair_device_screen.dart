@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trace/components/my_bottom.dart';
 import 'package:trace/components/my_textfield.dart';
+import 'package:trace/src/features/authentication/data/firebase_auth_repository.dart';
 
-class PairDeviceScreen extends StatelessWidget {
+class PairDeviceScreen extends ConsumerWidget {
   PairDeviceScreen({super.key});
 
   // text editing controllers
   final codeController = TextEditingController();
 
-  // pair device method
-  void pairDevice() {
-    // print("Code: ${codeController.text}");
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authRepository = ref.watch(authRepositoryProvider);
     return Scaffold(
         backgroundColor: Colors.grey[300],
         body: SafeArea(
@@ -29,7 +27,9 @@ class PairDeviceScreen extends StatelessWidget {
                   hintText: 'digit code',
                   obscureText: false),
               const SizedBox(height: 25),
-              MyBottom(onTap: pairDevice, text: 'Pair Device')
+              MyBottom(
+                  onTap: () => authRepository.pairDevice(codeController.text),
+                  text: 'Pair Device')
             ]),
           ),
         ));

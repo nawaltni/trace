@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trace/src/features/authentication/data/firebase_auth_repository.dart';
+import 'package:trace/src/routing/app_router.dart';
 
 class Page {
   final String title;
@@ -67,6 +68,11 @@ class DashboardScreen extends ConsumerWidget {
               leading: const Icon(Icons.person),
               title: const Text("Perfil"),
               onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.location_on),
+              title: const Text("Ubicación Actual"),
+              onTap: () => ref.read(goRouterProvider).go('/currentLocation'),
             ),
             ListTile(
               leading: const Icon(Icons.logout),
