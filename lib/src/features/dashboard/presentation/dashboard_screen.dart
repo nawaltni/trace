@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:trace/src/features/authentication/data/firebase_auth_repository.dart';
+import 'package:trace/src/routing/app_router.dart';
 
 class Page {
   final String title;
@@ -7,8 +10,8 @@ class Page {
   const Page(this.title, this.icon);
 }
 
-class DashboardPage extends StatelessWidget {
-  const DashboardPage({Key? key}) : super(key: key);
+class DashboardScreen extends ConsumerWidget {
+  const DashboardScreen({Key? key}) : super(key: key);
 
   final List<Page> pages = const <Page>[
     Page('Dashboard', Icons.dashboard),
@@ -24,10 +27,11 @@ class DashboardPage extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authRepository = ref.watch(authRepositoryProvider);
     return Scaffold(
       appBar: AppBar(title: const Text("Dashboard"), actions: [
-        TextButton(onPressed: () {}, child: Text("Grupo Q.")),
+        TextButton(onPressed: () {}, child: const Text("Grupo Q.")),
       ]),
       drawer: Drawer(
         child: ListView(
@@ -66,11 +70,14 @@ class DashboardPage extends StatelessWidget {
               onTap: () {},
             ),
             ListTile(
+              leading: const Icon(Icons.location_on),
+              title: const Text("Ubicación Actual"),
+              onTap: () => ref.read(goRouterProvider).go('/currentLocation'),
+            ),
+            ListTile(
               leading: const Icon(Icons.logout),
               title: const Text("Sign Out"),
-              onTap: () {
-                signUserOut();
-              },
+              onTap: () => authRepository.signOut(),
             ),
           ],
         ),
