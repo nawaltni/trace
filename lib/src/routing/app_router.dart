@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:trace/src/features/authentication/data/firebase_auth_repository.dart';
 import 'package:trace/src/features/authentication/presentation/sign_in_screen.dart';
 import 'package:trace/src/features/authentication/presentation/pair_device_screen.dart';
-import 'package:trace/src/features/current_location/presentation/current_position_screen.dart';
+import 'package:trace/src/features/current_meta/presentation/current_meta.dart';
 import 'package:trace/src/features/dashboard/presentation/dashboard_screen.dart';
 import 'package:trace/src/routing/go_router_refresh_stream.dart';
 
@@ -18,7 +18,7 @@ enum AppRoute {
   signIn,
   pairDevice,
   dashboard,
-  currentLocation,
+  currentMeta,
   // signUp,
   // pairDevice,
   // dashboard,
@@ -84,9 +84,9 @@ GoRouter goRouter(GoRouterRef ref) {
       ),
       GoRoute(
         path: '/currentLocation',
-        name: AppRoute.currentLocation.name,
+        name: AppRoute.currentMeta.name,
         pageBuilder: (context, state) => const NoTransitionPage(
-          child: CurrentPositionScreen(),
+          child: CurrentMetaScreen(),
         ),
       )
     ],
