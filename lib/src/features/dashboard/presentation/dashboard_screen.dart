@@ -11,7 +11,7 @@ class Page {
 }
 
 class DashboardScreen extends ConsumerWidget {
-  const DashboardScreen({Key? key}) : super(key: key);
+  const DashboardScreen({super.key});
 
   final List<Page> pages = const <Page>[
     Page('Dashboard', Icons.dashboard),
@@ -67,7 +67,7 @@ class DashboardScreen extends ConsumerWidget {
             ListTile(
               leading: const Icon(Icons.person),
               title: const Text("Perfil"),
-              onTap: () {},
+              onTap: () => ref.read(goRouterProvider).go('/profile'),
             ),
             ListTile(
               leading: const Icon(Icons.location_on),

@@ -7,7 +7,7 @@ part of 'current_meta.dart';
 // **************************************************************************
 
 String _$currentMetaServiceHash() =>
-    r'044258bc78b4c2656419571c2d4e9f967dd77ab1';
+    r'2964b640ba041b421b7b4ca0432a619a5ef7391e';
 
 /// See also [currentMetaService].
 @ProviderFor(currentMetaService)
@@ -23,6 +23,21 @@ final currentMetaServiceProvider =
 );
 
 typedef CurrentMetaServiceRef = AutoDisposeProviderRef<CurrentMetaService>;
+String _$recordPositionHash() => r'c1f7471ad1e8376b6b98444851674f2663038b21';
+
+/// See also [recordPosition].
+@ProviderFor(recordPosition)
+final recordPositionProvider = AutoDisposeFutureProvider<void>.internal(
+  recordPosition,
+  name: r'recordPositionProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$recordPositionHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef RecordPositionRef = AutoDisposeFutureProviderRef<void>;
 String _$currentMetaHash() => r'd813d57cf8d4a4d21a04388932fe922c0ff1a42b';
 
 /// See also [currentMeta].

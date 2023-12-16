@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:grpc/grpc.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:trace/domain/profile.dart';
 import 'package:trace/src/grpc/auth.dart';
 
 part 'firebase_auth_repository.g.dart';
@@ -11,6 +12,8 @@ class AuthRepository {
   // declare private variable
   final FirebaseAuth _firebaseAuth;
   final NawaltAuthAPI _nawaltAuth;
+
+  UserProfile? profile;
 
   Stream<User?> authStateChanges() => _firebaseAuth.authStateChanges();
   User? get currentUser => _firebaseAuth.currentUser;
@@ -27,6 +30,23 @@ class AuthRepository {
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
       }
+    }
+
+    String? bearer;
+    try {
+      bearer = await _firebaseAuth.currentUser!.getIdToken();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-token-expired') {
+        print('The custom token has expired.');
+      }
+    }
+
+    // get profile using the firebase jwt token
+    try {
+      profile = await _nawaltAuth.getProfile(bearer);
+      print('Profile: $profile');
+    } on GrpcError catch (e) {
+      print('Getting profile failed with code ${e.code}: ${e.message}');
     }
   }
 
@@ -55,6 +75,27 @@ class AuthRepository {
       } else if (e.code == 'custom-token-mismatch') {
         print('The custom token corresponds to a different audience.');
       }
+    }
+
+    String? bearer;
+    try {
+      bearer = await _firebaseAuth.currentUser!.getIdToken();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-token-expired') {
+        print('The custom token has expired.');
+      }
+    }
+
+    // get profile using the firebase jwt token
+    try {
+      profile = await _nawaltAuth.getProfile(bearer);
+      print('Profile: $profile');
+    } on GrpcError catch (e) {
+      print('Getting profile failed with code ${e.code}: ${e.message}');
+    }
+
+    UserProfile? getCurrentProfile() {
+      return profile;
     }
   }
 
@@ -85,4 +126,11 @@ AuthRepository authRepository(AuthRepositoryRef ref) {
 @riverpod
 Stream<User?> authStateChanges(AuthStateChangesRef ref) {
   return ref.watch(authRepositoryProvider).authStateChanges();
+}
+
+// CurrentUser Provider returns the current user. This is used to determine
+// if the user is logged in or not.
+@riverpod
+User? currentUser(CurrentUserRef ref) {
+  return ref.watch(authRepositoryProvider).currentUser;
 }

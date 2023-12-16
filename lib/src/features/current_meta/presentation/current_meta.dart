@@ -11,7 +11,7 @@ class CurrentMetaScreen extends ConsumerStatefulWidget {
 }
 
 class _CurrentMetaScreenState extends ConsumerState<CurrentMetaScreen> {
-  late AppMetadata meta;
+  AppMetadata? meta;
   @override
   Widget build(BuildContext context) {
     var metaService = ref.watch(currentMetaServiceProvider);
@@ -24,24 +24,31 @@ class _CurrentMetaScreenState extends ConsumerState<CurrentMetaScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-                child: const Text("Get Current Meta"),
-                onPressed: () => {
-                      metaService.currentMeta().then((value) => {
-                            setState(() {
-                              meta = value;
-                            })
-                          })
-                    }),
-            Text("ID: $meta.id"),
+            Row(
+              children: [
+                ElevatedButton(
+                    child: const Text("Get Current Meta"),
+                    onPressed: () => {
+                          metaService.currentMeta().then((value) => {
+                                setState(() {
+                                  meta = value;
+                                })
+                              })
+                        }),
+                ElevatedButton(
+                    child: const Text("Record Position"),
+                    onPressed: () => {metaService.recordPosition()}),
+              ],
+            ),
+            Text("ID: ${meta?.deviceInfo.id}"),
             Text(
-                "Location: ${meta.location.latitude}, ${meta.location.longitude} "),
-            Text("Battery: ${meta.battery}"),
-            Text("Brand: ${meta.deviceInfo.brand}"),
-            Text("Model: ${meta.deviceInfo.model}"),
-            Text("OS: ${meta.deviceInfo.os}"),
-            Text("App Version: ${meta.deviceInfo.appVersion}"),
-            Text("Carrier: ${meta.deviceInfo.carrier}"),
+                "Location: ${meta?.location.latitude}, ${meta?.location.longitude} "),
+            Text("Battery: ${meta?.battery}"),
+            Text("Brand: ${meta?.deviceInfo.brand}"),
+            Text("Model: ${meta?.deviceInfo.model}"),
+            Text("OS: ${meta?.deviceInfo.os}"),
+            Text("App Version: ${meta?.deviceInfo.appVersion}"),
+            Text("Carrier: ${meta?.deviceInfo.carrier}"),
           ],
         ),
       ),

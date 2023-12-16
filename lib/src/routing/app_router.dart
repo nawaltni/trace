@@ -6,6 +6,7 @@ import 'package:trace/src/features/authentication/presentation/sign_in_screen.da
 import 'package:trace/src/features/authentication/presentation/pair_device_screen.dart';
 import 'package:trace/src/features/current_meta/presentation/current_meta.dart';
 import 'package:trace/src/features/dashboard/presentation/dashboard_screen.dart';
+import 'package:trace/src/features/profile/presentation/profile.dart';
 import 'package:trace/src/routing/go_router_refresh_stream.dart';
 
 part 'app_router.g.dart';
@@ -19,6 +20,7 @@ enum AppRoute {
   pairDevice,
   dashboard,
   currentMeta,
+  profile,
   // signUp,
   // pairDevice,
   // dashboard,
@@ -88,7 +90,14 @@ GoRouter goRouter(GoRouterRef ref) {
         pageBuilder: (context, state) => const NoTransitionPage(
           child: CurrentMetaScreen(),
         ),
-      )
+      ),
+      GoRoute(
+        path: '/profile',
+        name: AppRoute.profile.name,
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: ProfileScreen(),
+        ),
+      ),
     ],
   );
 }

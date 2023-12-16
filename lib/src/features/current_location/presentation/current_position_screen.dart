@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trace/src/features/current_location/data/current_location_repository.dart';
 
 class CurrentPositionScreen extends ConsumerStatefulWidget {
-  const CurrentPositionScreen({Key? key}) : super(key: key);
+  const CurrentPositionScreen({super.key});
 
   @override
   _PositionState createState() => _PositionState();

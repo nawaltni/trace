@@ -1,16 +1,18 @@
 // PhoneMeta represents the phone's metadata
 class PhoneMeta {
-  final String deviceID;
+  final String id;
+  final String brand;
   final String model;
-  final String osVersion;
+  final String os;
+  final String appVersion;
   final String carrier;
-  final String corporateID;
 
   PhoneMeta({
-    required this.deviceID,
+    required this.id,
+    required this.brand,
     required this.model,
-    required this.osVersion,
+    required this.os,
+    required this.appVersion,
     required this.carrier,
-    required this.corporateID,
   });
 }

@@ -35,6 +35,7 @@ class NawaltTrackingAPI {
     await _stub.recordPosition(recordPositionRequest);
   }
 
+
   Future<void> close() async {
     await _channel.shutdown();
   }

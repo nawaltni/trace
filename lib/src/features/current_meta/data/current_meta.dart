@@ -3,9 +3,14 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:grpc/grpc.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:trace/domain/phone_meta.dart';
+import 'package:trace/domain/user_position.dart';
+import 'package:trace/src/grpc/track.dart';
+import 'package:uuid/uuid.dart';
 
 part 'current_meta.g.dart';
 
@@ -42,6 +47,10 @@ class DeviceStandardInfo {
 // Contains methods to get the current meta data and position stream
 // of the device
 class CurrentMetaService {
+  CurrentMetaService(this._nawaltTrackingAPI);
+
+  final NawaltTrackingAPI _nawaltTrackingAPI;
+
   static LocationSettings locationSettings = const LocationSettings(
       accuracy: LocationAccuracy.high, distanceFilter: 10);
 
@@ -49,7 +58,6 @@ class CurrentMetaService {
 
   /// Returns the current meta data of the device
   Future<AppMetadata> currentMeta() async {
-    
     final location = await currentLocation();
     final battery = await batteryLevel();
     final deviceInfo = await deviceStandardInfo();
@@ -60,6 +68,7 @@ class CurrentMetaService {
       deviceInfo: deviceInfo,
     );
   }
+
 // get current location
   Future<Position> currentLocation() async {
     bool serviceEnabled;
@@ -134,6 +143,36 @@ class CurrentMetaService {
 
   static Stream<Position> positionStream =
       Geolocator.getPositionStream(locationSettings: locationSettings);
+
+  Future<void> recordPosition() async {
+    final meta = await currentMeta();
+    var uuid = const Uuid();
+    try {
+      final id = uuid.v7();
+
+      final phoneMeta = PhoneMeta(
+        id: meta.deviceInfo.id,
+        brand: meta.deviceInfo.brand,
+        model: meta.deviceInfo.model,
+        os: meta.deviceInfo.os,
+        appVersion: meta.deviceInfo.appVersion,
+        carrier: meta.deviceInfo.carrier,
+      );
+
+      final userPosition = UserPositionReport(
+          uuid: id.toString(),
+          userID: meta.deviceInfo.id,
+          latitude: meta.location.latitude,
+          longitude: meta.location.longitude,
+          timestamp: DateTime.now(),
+          phoneMeta: phoneMeta);
+
+      await _nawaltTrackingAPI.recordPosition(userPosition);
+    } on GrpcError catch (e) {
+      print('Pairing device failed with code ${e.code}: ${e.message}');
+      return;
+    }
+  }
 }
 
 DeviceStandardInfo _readAndroidInfo(AndroidDeviceInfo info) {
@@ -160,7 +199,14 @@ DeviceStandardInfo _readIosInfo(IosDeviceInfo info) {
 
 @riverpod
 CurrentMetaService currentMetaService(CurrentMetaServiceRef ref) {
-  return CurrentMetaService();
+  return CurrentMetaService(
+    ref.watch(nawaltTrackingAPIProvider),
+  );
+}
+
+@riverpod
+Future<void> recordPosition(RecordPositionRef ref) async {
+  return ref.watch(currentMetaServiceProvider).recordPosition();
 }
 
 @riverpod

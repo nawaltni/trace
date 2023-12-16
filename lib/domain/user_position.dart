@@ -30,7 +30,6 @@ class UserPositionReport {
   final String userID;
   final double latitude;
   final double longitude;
-  final double clientID;
   final DateTime timestamp;
 
   final PhoneMeta phoneMeta;
@@ -40,7 +39,6 @@ class UserPositionReport {
     required this.userID,
     required this.latitude,
     required this.longitude,
-    required this.clientID,
     required this.timestamp,
     required this.phoneMeta,
   });
