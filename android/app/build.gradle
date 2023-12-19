@@ -24,7 +24,9 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.nawalt.trace"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
+    // compileSdkVersion flutter.compileSdkVersion
+    
     ndkVersion flutter.ndkVersion
 
     compileOptions {

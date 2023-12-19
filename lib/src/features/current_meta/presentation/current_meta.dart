@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trace/src/features/current_meta/data/current_meta.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 
 class CurrentMetaScreen extends ConsumerStatefulWidget {
   const CurrentMetaScreen({super.key});
@@ -24,8 +25,10 @@ class _CurrentMetaScreenState extends ConsumerState<CurrentMetaScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                const Text("Actions"),
                 ElevatedButton(
                     child: const Text("Get Current Meta"),
                     onPressed: () => {
@@ -38,8 +41,24 @@ class _CurrentMetaScreenState extends ConsumerState<CurrentMetaScreen> {
                 ElevatedButton(
                     child: const Text("Record Position"),
                     onPressed: () => {metaService.recordPosition()}),
+                ElevatedButton(
+                    child: const Text("Start Background"),
+                    onPressed: () async => {
+                          if (await FlutterBackgroundService().isRunning() ==
+                              false)
+                            {FlutterBackgroundService().startService()}
+                        }),
+                ElevatedButton(
+                    child: const Text("Stop Background"),
+                    onPressed: () async => {
+                          if (await FlutterBackgroundService().isRunning() ==
+                              true)
+                            {FlutterBackgroundService().invoke("stopService")}
+                        }),
               ],
             ),
+            const SizedBox(height: 20),
+            const Text("Current Meta"),
             Text("ID: ${meta?.deviceInfo.id}"),
             Text(
                 "Location: ${meta?.location.latitude}, ${meta?.location.longitude} "),

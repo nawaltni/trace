@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:trace/src/app.dart';
+import 'package:trace/src/features/background/application/trace.dart';
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await initializeService();
   runApp(const ProviderScope(child: MyApp()));
 }
 
 // class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
+//   const MyA  pp({super.key});
 
 //   // This widget is the root of your application.
 //   @override
