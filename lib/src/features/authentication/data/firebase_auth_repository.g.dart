@@ -64,5 +64,20 @@ final currentUserProvider = AutoDisposeProvider<User?>.internal(
 );
 
 typedef CurrentUserRef = AutoDisposeProviderRef<User?>;
+String _$currentProfileHash() => r'ef66cd73fdc4c61c2c24d7ceafa659d15e3ad24b';
+
+/// See also [currentProfile].
+@ProviderFor(currentProfile)
+final currentProfileProvider = AutoDisposeFutureProvider<UserProfile?>.internal(
+  currentProfile,
+  name: r'currentProfileProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$currentProfileHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef CurrentProfileRef = AutoDisposeFutureProviderRef<UserProfile?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

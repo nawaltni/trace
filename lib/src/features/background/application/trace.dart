@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -41,6 +42,9 @@ void onStart(ServiceInstance service) async {
 
   final timer = Timer.periodic(const Duration(seconds: 10), (timer) async {
     final token = await FirebaseAuth.instance.currentUser!.getIdToken();
+    final currentMeta = await currentMetaService.currentMeta();
+
+    print("Current Meta: ${currentMeta.location}, ${currentMeta.battery}, ${currentMeta.deviceInfo}");
     print("Sending metadata with token: $token");
     // we send metrics to our endpoint here
   });
@@ -51,3 +55,4 @@ void onStart(ServiceInstance service) async {
     print("Stopping service");
   });
 }
+
