@@ -6,11 +6,11 @@ part of 'track.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$nawaltTrackingAPIHash() => r'75056101340d2c4ca55491ff30149d4d8ae2136e';
+String _$nawaltTrackingAPIHash() => r'3f8c4acdd4ce577a070b79cf0047ceb26c194e86';
 
 /// See also [nawaltTrackingAPI].
 @ProviderFor(nawaltTrackingAPI)
-final nawaltTrackingAPIProvider = Provider<NawaltTrackingAPI>.internal(
+final nawaltTrackingAPIProvider = Provider<NawaltTrackingClientGRPC>.internal(
   nawaltTrackingAPI,
   name: r'nawaltTrackingAPIProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -20,8 +20,8 @@ final nawaltTrackingAPIProvider = Provider<NawaltTrackingAPI>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef NawaltTrackingAPIRef = ProviderRef<NawaltTrackingAPI>;
-String _$recordPositionHash() => r'1b2829d19364272c81c090ad86ef3d21c7235152';
+typedef NawaltTrackingAPIRef = ProviderRef<NawaltTrackingClientGRPC>;
+String _$recordPositionHash() => r'6bad22fae9ce226a0e8323f0b8f492e738208c5f';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -55,9 +55,11 @@ class RecordPositionFamily extends Family<AsyncValue<void>> {
 
   /// See also [recordPosition].
   RecordPositionProvider call({
+    required AuthData auth,
     required UserPositionReport request,
   }) {
     return RecordPositionProvider(
+      auth: auth,
       request: request,
     );
   }
@@ -67,6 +69,7 @@ class RecordPositionFamily extends Family<AsyncValue<void>> {
     covariant RecordPositionProvider provider,
   ) {
     return call(
+      auth: provider.auth,
       request: provider.request,
     );
   }
@@ -90,10 +93,12 @@ class RecordPositionFamily extends Family<AsyncValue<void>> {
 class RecordPositionProvider extends FutureProvider<void> {
   /// See also [recordPosition].
   RecordPositionProvider({
+    required AuthData auth,
     required UserPositionReport request,
   }) : this._internal(
           (ref) => recordPosition(
             ref as RecordPositionRef,
+            auth: auth,
             request: request,
           ),
           from: recordPositionProvider,
@@ -105,6 +110,7 @@ class RecordPositionProvider extends FutureProvider<void> {
           dependencies: RecordPositionFamily._dependencies,
           allTransitiveDependencies:
               RecordPositionFamily._allTransitiveDependencies,
+          auth: auth,
           request: request,
         );
 
@@ -115,9 +121,11 @@ class RecordPositionProvider extends FutureProvider<void> {
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
+    required this.auth,
     required this.request,
   }) : super.internal();
 
+  final AuthData auth;
   final UserPositionReport request;
 
   @override
@@ -133,6 +141,7 @@ class RecordPositionProvider extends FutureProvider<void> {
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
+        auth: auth,
         request: request,
       ),
     );
@@ -145,12 +154,15 @@ class RecordPositionProvider extends FutureProvider<void> {
 
   @override
   bool operator ==(Object other) {
-    return other is RecordPositionProvider && other.request == request;
+    return other is RecordPositionProvider &&
+        other.auth == auth &&
+        other.request == request;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, auth.hashCode);
     hash = _SystemHash.combine(hash, request.hashCode);
 
     return _SystemHash.finish(hash);
@@ -158,6 +170,9 @@ class RecordPositionProvider extends FutureProvider<void> {
 }
 
 mixin RecordPositionRef on FutureProviderRef<void> {
+  /// The parameter `auth` of this provider.
+  AuthData get auth;
+
   /// The parameter `request` of this provider.
   UserPositionReport get request;
 }
@@ -166,6 +181,8 @@ class _RecordPositionProviderElement extends FutureProviderElement<void>
     with RecordPositionRef {
   _RecordPositionProviderElement(super.provider);
 
+  @override
+  AuthData get auth => (origin as RecordPositionProvider).auth;
   @override
   UserPositionReport get request => (origin as RecordPositionProvider).request;
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:go_router/go_router.dart';
-import 'package:trace/src/features/authentication/data/firebase_auth_repository.dart';
+import 'package:trace/src/features/authentication/data/auth_repository.dart';
 import 'package:trace/src/features/authentication/presentation/sign_in_screen.dart';
 import 'package:trace/src/features/authentication/presentation/pair_device_screen.dart';
 import 'package:trace/src/features/current_meta/presentation/current_meta.dart';

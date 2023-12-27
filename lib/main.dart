@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:trace/src/app.dart';
-import 'package:trace/src/features/background/application/trace.dart';
+import 'package:trace/src/features/background/service/trace.dart';
 import 'firebase_options.dart';
 
 void main() async {

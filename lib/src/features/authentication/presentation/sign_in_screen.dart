@@ -3,7 +3,7 @@ import 'package:trace/components/my_bottom.dart';
 import 'package:trace/components/my_textfield.dart';
 import 'package:trace/components/square_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:trace/src/features/authentication/data/firebase_auth_repository.dart';
+import 'package:trace/src/features/authentication/data/auth_repository.dart';
 import 'package:trace/src/routing/app_router.dart';
 
 class SignInScreen extends ConsumerWidget {

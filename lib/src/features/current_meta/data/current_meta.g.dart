@@ -6,39 +6,25 @@ part of 'current_meta.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$currentMetaServiceHash() =>
-    r'2964b640ba041b421b7b4ca0432a619a5ef7391e';
+String _$currentMetaRepositoryHash() =>
+    r'6a18ac2eb54039031ee2d319334daa7cb47cb271';
 
-/// See also [currentMetaService].
-@ProviderFor(currentMetaService)
-final currentMetaServiceProvider =
-    AutoDisposeProvider<CurrentMetaService>.internal(
-  currentMetaService,
-  name: r'currentMetaServiceProvider',
+/// See also [currentMetaRepository].
+@ProviderFor(currentMetaRepository)
+final currentMetaRepositoryProvider =
+    AutoDisposeProvider<CurrentMetaRepository>.internal(
+  currentMetaRepository,
+  name: r'currentMetaRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$currentMetaServiceHash,
+      : _$currentMetaRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef CurrentMetaServiceRef = AutoDisposeProviderRef<CurrentMetaService>;
-String _$recordPositionHash() => r'c1f7471ad1e8376b6b98444851674f2663038b21';
-
-/// See also [recordPosition].
-@ProviderFor(recordPosition)
-final recordPositionProvider = AutoDisposeFutureProvider<void>.internal(
-  recordPosition,
-  name: r'recordPositionProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$recordPositionHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef RecordPositionRef = AutoDisposeFutureProviderRef<void>;
-String _$currentMetaHash() => r'd813d57cf8d4a4d21a04388932fe922c0ff1a42b';
+typedef CurrentMetaRepositoryRef
+    = AutoDisposeProviderRef<CurrentMetaRepository>;
+String _$currentMetaHash() => r'b8d05b1d3af6b1c21df426c89242e8641b8c2195';
 
 /// See also [currentMeta].
 @ProviderFor(currentMeta)
@@ -52,7 +38,7 @@ final currentMetaProvider = AutoDisposeFutureProvider<AppMetadata>.internal(
 );
 
 typedef CurrentMetaRef = AutoDisposeFutureProviderRef<AppMetadata>;
-String _$currentLocationHash() => r'31136d60bf60d2defa2bcb69796f88baf40995ae';
+String _$currentLocationHash() => r'2e0fcf7abaa6b84193ceca5f0ab1937a2f7bff06';
 
 /// See also [currentLocation].
 @ProviderFor(currentLocation)
@@ -67,7 +53,7 @@ final currentLocationProvider = AutoDisposeFutureProvider<Position>.internal(
 );
 
 typedef CurrentLocationRef = AutoDisposeFutureProviderRef<Position>;
-String _$batteryLevelHash() => r'e25586a92b5728fe7bc4380e05927ccb37d85df4';
+String _$batteryLevelHash() => r'b0bbda06903f91e87ef0684df80147a0dfd857ce';
 
 /// See also [batteryLevel].
 @ProviderFor(batteryLevel)
@@ -81,23 +67,19 @@ final batteryLevelProvider = AutoDisposeFutureProvider<String>.internal(
 );
 
 typedef BatteryLevelRef = AutoDisposeFutureProviderRef<String>;
-String _$deviceStandardInfoHash() =>
-    r'0cb9074e735f4d6ff9444ff42d6130a6585a0ad1';
+String _$phoneMetaHash() => r'acd2dfa2934a4f37516dd668e69cef8f01ac1d42';
 
-/// See also [deviceStandardInfo].
-@ProviderFor(deviceStandardInfo)
-final deviceStandardInfoProvider =
-    AutoDisposeFutureProvider<DeviceStandardInfo>.internal(
-  deviceStandardInfo,
-  name: r'deviceStandardInfoProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$deviceStandardInfoHash,
+/// See also [phoneMeta].
+@ProviderFor(phoneMeta)
+final phoneMetaProvider = AutoDisposeFutureProvider<PhoneMeta>.internal(
+  phoneMeta,
+  name: r'phoneMetaProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$phoneMetaHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef DeviceStandardInfoRef
-    = AutoDisposeFutureProviderRef<DeviceStandardInfo>;
+typedef PhoneMetaRef = AutoDisposeFutureProviderRef<PhoneMeta>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

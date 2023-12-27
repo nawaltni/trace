@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trace/domain/profile.dart';
-import 'package:trace/src/features/authentication/data/firebase_auth_repository.dart';
+import 'package:trace/src/features/authentication/data/auth_repository.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});

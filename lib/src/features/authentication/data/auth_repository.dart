@@ -2,10 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:grpc/grpc.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:trace/domain/auth.dart';
 import 'package:trace/domain/profile.dart';
 import 'package:trace/src/grpc/auth.dart';
 
-part 'firebase_auth_repository.g.dart';
+part 'auth_repository.g.dart';
 
 class AuthRepository {
   // constructor
@@ -183,6 +184,14 @@ class AuthRepository {
         address: userAddress,
         city: userCity,
         state: userState);
+  }
+
+  Future<AuthData> getAuthData() async {
+    final prefs = await _prefs;
+    final userId = prefs.getString("user_id") ?? "";
+    final bearer = await _firebaseAuth.currentUser!.getIdToken();
+
+    return AuthData(userId: userId, token: bearer!);
   }
 
   Future<void> signOut() async {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:trace/components/my_bottom.dart';
 import 'package:trace/components/my_textfield.dart';
-import 'package:trace/src/features/authentication/data/firebase_auth_repository.dart';
+import 'package:trace/src/features/authentication/data/auth_repository.dart';
 
 class PairDeviceScreen extends ConsumerWidget {
   PairDeviceScreen({super.key});
