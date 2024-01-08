@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:grpc/grpc.dart';
 import 'package:nawalt/nawalt.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -10,11 +11,15 @@ class NawaltAuthAPI {
   late final AuthServiceClient _stub;
 
   NawaltAuthAPI() {
+    var host = dotenv.env['GRPC_HOST'];
+    var port = dotenv.env['GRPC_PORT'];
+    print('NawaltAuthAPI: host: $host, port: $port');
     _channel = ClientChannel(
-      '10.0.2.2',
-      port: 50053,
+      host!,
+      port: int.parse(port!),
       options: const ChannelOptions(
-        credentials: ChannelCredentials.insecure(),
+        credentials: ChannelCredentials.secure(),
+        // credentials: ChannelCredentials.insecure(),
       ),
     );
 

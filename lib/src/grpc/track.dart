@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:grpc/grpc.dart';
 import 'package:nawalt/nawalt.dart';
 import 'package:trace/domain/auth.dart';
@@ -11,11 +12,14 @@ class NawaltTrackingClientGRPC {
   late final TrackingServiceClient _stub;
 
   NawaltTrackingClientGRPC() {
+    var host = dotenv.env['GRPC_HOST'];
+    var port = dotenv.env['GRPC_PORT'];
     _channel = ClientChannel(
-      '10.0.2.2',
-      port: 50051,
+      host!,
+      port: int.parse(port!),
       options: const ChannelOptions(
-        credentials: ChannelCredentials.insecure(),
+        credentials: ChannelCredentials.secure(),
+        // credentials: ChannelCredentials.insecure(),
       ),
     );
     _stub = TrackingServiceClient(_channel);

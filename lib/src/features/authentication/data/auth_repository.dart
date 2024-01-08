@@ -83,6 +83,8 @@ class AuthRepository {
             'The custom token format is incorrect. Please check the documentation.');
       } else if (e.code == 'custom-token-mismatch') {
         print('The custom token corresponds to a different audience.');
+      } else {
+        print('Unknown error');
       }
     }
 

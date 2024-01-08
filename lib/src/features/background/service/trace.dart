@@ -1,13 +1,13 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
-import 'package:trace/domain/user_position.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:trace/src/features/authentication/data/auth_repository.dart';
 import 'package:trace/src/features/current_meta/data/current_meta.dart';
+import 'package:trace/src/features/current_meta/service/current_meta_service.dart';
 import 'package:trace/src/grpc/auth.dart';
 import 'package:trace/src/grpc/track.dart';
 import 'package:uuid/uuid.dart';
@@ -21,12 +21,15 @@ Future<void> initializeService() async {
 }
 
 void onStart(ServiceInstance service) async {
+  await dotenv.load(fileName: ".env");
   await Firebase.initializeApp();
 
   final nawaltTrackingAPI = NawaltTrackingClientGRPC();
-  final currentMetaService = CurrentMetaRepository();
+  final currentMetaRepository = CurrentMetaRepository();
   final NawaltAuthAPI nawaltAuthAPI = NawaltAuthAPI();
   final authRepo = AuthRepository(FirebaseAuth.instance, nawaltAuthAPI);
+  final currentMetaService =
+      CurrentMetaService(currentMetaRepository, authRepo);
 
   // make sure we have all the dependencies we need within this function
   // otherwise we will get a runtime error
@@ -51,24 +54,7 @@ void onStart(ServiceInstance service) async {
   }
 
   final timer = Timer.periodic(const Duration(seconds: 10), (timer) async {
-    final token = await FirebaseAuth.instance.currentUser!.getIdToken();
-    final currentMeta = await currentMetaService.currentMeta();
-
-    final profile = await authRepo.getCurrentProfile();
-
-    final userPositionRequest = UserPositionReport(
-      uuid: generateUuidV7(),
-      userID: profile!.id,
-      latitude: currentMeta.location.latitude,
-      longitude: currentMeta.location.longitude,
-      timestamp: DateTime.now(),
-      phoneMeta: currentMeta.phoneMeta,
-    );
-
-    print(
-        "Current Meta: ${currentMeta.location}, ${currentMeta.battery}, ${currentMeta.phoneMeta}");
-    print("Sending metadata with token: $token");
-    // we send metrics to our endpoint here
+    currentMetaService.recordPosition();
   });
 
   service.on('stopService').listen((event) {
