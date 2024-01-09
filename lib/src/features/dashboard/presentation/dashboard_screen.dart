@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:trace/src/features/authentication/data/auth_repository.dart';
-import 'package:trace/src/routing/app_router.dart';
+import 'package:trace/src/common_widgets/common_drawer.dart';
+// import 'package:trace/src/features/authentication/data/auth_repository.dart';
 
 class Page {
   final String title;
@@ -28,60 +28,12 @@ class DashboardScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authRepository = ref.watch(authRepositoryProvider);
+    // final authRepository = ref.watch(authRepositoryProvider);
     return Scaffold(
       appBar: AppBar(title: const Text("Dashboard"), actions: [
         TextButton(onPressed: () {}, child: const Text("Grupo Q.")),
       ]),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            const DrawerHeader(
-                decoration: BoxDecoration(color: Colors.blue),
-                child: Text("Drawer Header")),
-            ListTile(
-              leading: const Icon(Icons.dashboard),
-              title: const Text("Dashboard"),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.map),
-              title: const Text("Itinerario"),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.note_add),
-              title: const Text("Evaluaciones"),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.store),
-              title: const Text("Puntos de Ventas"),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.notifications),
-              title: const Text("Notificaciones"),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text("Perfil"),
-              onTap: () => ref.read(goRouterProvider).go('/profile'),
-            ),
-            ListTile(
-              leading: const Icon(Icons.location_on),
-              title: const Text("Ubicación Actual"),
-              onTap: () => ref.read(goRouterProvider).go('/currentLocation'),
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text("Sign Out"),
-              onTap: () => authRepository.signOut(),
-            ),
-          ],
-        ),
-      ),
+      drawer: CommonDrawer(),
       body: SafeArea(
         child: Column(
           children: [
