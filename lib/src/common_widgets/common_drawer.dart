@@ -22,7 +22,7 @@ class CommonDrawer extends ConsumerWidget {
           currentProfile.when(
             data: (currentProfile) => UserAccountsDrawerHeader(
               decoration: const BoxDecoration(
-                color: Color(0xFF0062ac),
+                color: Color(0xFF11171F),
               ),
               accountName: Text(currentProfile?.name ?? ""),
               accountEmail: Text(currentProfile?.email ?? ""),
@@ -40,7 +40,7 @@ class CommonDrawer extends ConsumerWidget {
           ListTile(
             leading: const Icon(Icons.dashboard),
             title: const Text("Dashboard"),
-            onTap: () {},
+            onTap: () => ref.read(goRouterProvider).push('/dashboard'),
           ),
           ListTile(
             leading: const Icon(Icons.map),
@@ -65,12 +65,12 @@ class CommonDrawer extends ConsumerWidget {
           ListTile(
             leading: const Icon(Icons.person),
             title: const Text("Perfil"),
-            onTap: () => ref.read(goRouterProvider).go('/profile'),
+            onTap: () => ref.read(goRouterProvider).push('/profile'),
           ),
           ListTile(
             leading: const Icon(Icons.location_on),
             title: const Text("Ubicación Actual"),
-            onTap: () => ref.read(goRouterProvider).go('/currentLocation'),
+            onTap: () => ref.read(goRouterProvider).push('/currentLocation'),
           ),
           ListTile(
             leading: const Icon(Icons.logout),

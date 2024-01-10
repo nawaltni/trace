@@ -33,7 +33,7 @@ class DashboardScreen extends ConsumerWidget {
       appBar: AppBar(title: const Text("Dashboard"), actions: [
         TextButton(onPressed: () {}, child: const Text("Grupo Q.")),
       ]),
-      drawer: CommonDrawer(),
+      drawer: const CommonDrawer(),
       body: SafeArea(
         child: Column(
           children: [

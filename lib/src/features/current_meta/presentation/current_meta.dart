@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:trace/src/common_widgets/common_drawer.dart';
 import 'package:trace/src/features/current_meta/data/current_meta.dart';
 import 'package:trace/src/features/current_meta/service/current_meta_service.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
@@ -23,6 +24,7 @@ class _CurrentMetaScreenState extends ConsumerState<CurrentMetaScreen> {
       appBar: AppBar(
         title: const Text("Current Meta"),
       ),
+      drawer: const CommonDrawer(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -31,7 +33,7 @@ class _CurrentMetaScreenState extends ConsumerState<CurrentMetaScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Text("Actions"),
-                ElevatedButton(
+                FilledButton(
                     child: const Text("Get Current Meta"),
                     onPressed: () => {
                           metaRepository.currentMeta().then((value) => {
@@ -40,17 +42,17 @@ class _CurrentMetaScreenState extends ConsumerState<CurrentMetaScreen> {
                                 })
                               })
                         }),
-                ElevatedButton(
+                FilledButton(
                     child: const Text("Record Position"),
                     onPressed: () => metaService.recordPosition()),
-                ElevatedButton(
+                FilledButton(
                     child: const Text("Start Background"),
                     onPressed: () async => {
                           if (await FlutterBackgroundService().isRunning() ==
                               false)
                             {FlutterBackgroundService().startService()}
                         }),
-                ElevatedButton(
+                FilledButton(
                     child: const Text("Stop Background"),
                     onPressed: () async => {
                           if (await FlutterBackgroundService().isRunning() ==
