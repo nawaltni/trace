@@ -43,25 +43,35 @@ class CommonDrawer extends ConsumerWidget {
             onTap: () => ref.read(goRouterProvider).push('/dashboard'),
           ),
           ListTile(
-            leading: const Icon(Icons.map),
-            title: const Text("Itinerario"),
-            onTap: () {},
+            leading: const Icon(Icons.door_sliding),
+            title: const Text("Check in"),
+            onTap: () => ref.read(goRouterProvider).push('/checkin'),
           ),
           ListTile(
-            leading: const Icon(Icons.note_add),
-            title: const Text("Evaluaciones"),
-            onTap: () {},
+            leading: const Icon(Icons.assignment),
+            title: const Text("Encuestas"),
+            onTap: () => ref.read(goRouterProvider).push('/survey'),
           ),
-          ListTile(
-            leading: const Icon(Icons.store),
-            title: const Text("Puntos de Ventas"),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(Icons.notifications),
-            title: const Text("Notificaciones"),
-            onTap: () {},
-          ),
+          // ListTile(
+          //   leading: const Icon(Icons.map),
+          //   title: const Text("Itinerario"),
+          //   onTap: () {},
+          // ),
+          // ListTile(
+          //   leading: const Icon(Icons.note_add),
+          //   title: const Text("Evaluaciones"),
+          //   onTap: () {},
+          // ),
+          // ListTile(
+          //   leading: const Icon(Icons.store),
+          //   title: const Text("Puntos de Ventas"),
+          //   onTap: () {},
+          // ),
+          // ListTile(
+          //   leading: const Icon(Icons.notifications),
+          //   title: const Text("Notificaciones"),
+          //   onTap: () {},
+          // ),
           ListTile(
             leading: const Icon(Icons.person),
             title: const Text("Perfil"),

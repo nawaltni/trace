@@ -7,6 +7,7 @@ import 'package:trace/src/features/authentication/presentation/pair_device_scree
 import 'package:trace/src/features/current_meta/presentation/current_meta.dart';
 import 'package:trace/src/features/dashboard/presentation/dashboard_screen.dart';
 import 'package:trace/src/features/profile/presentation/profile.dart';
+import 'package:trace/src/features/survey/presentation/survey.dart';
 import 'package:trace/src/routing/go_router_refresh_stream.dart';
 
 part 'app_router.g.dart';
@@ -21,6 +22,8 @@ enum AppRoute {
   dashboard,
   currentMeta,
   profile,
+  checkin,
+  survey,
   // signUp,
   // pairDevice,
   // dashboard,
@@ -96,6 +99,20 @@ GoRouter goRouter(GoRouterRef ref) {
         name: AppRoute.profile.name,
         pageBuilder: (context, state) => const NoTransitionPage(
           child: ProfileScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/checkin',
+        name: AppRoute.checkin.name,
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: ProfileScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/survey',
+        name: AppRoute.survey.name,
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: SurveyScreen(),
         ),
       ),
     ],

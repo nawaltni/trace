@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:trace/src/app.dart';
 import 'package:trace/src/features/background/service/trace.dart';
+import 'package:trace/src/features/survey/data/db.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -11,6 +12,13 @@ void main() async {
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await initializeService();
+
+// Initialize the database helper as a global or singleton
+  final dbHelper = DatabaseHelper.instance;
+
+  // Initialize the database and create tables if they don't exist
+  await dbHelper.initializeDatabase();
+
   runApp(const ProviderScope(child: MyApp()));
 }
 
