@@ -6,6 +6,15 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:trace/src/features/survey/data/models.dart';
 
+final migrations = [
+  '''
+  ALTER TABLE survey ADD COLUMN created_at TEXT;
+  ''',
+  '''
+  ALTER TABLE survey ADD COLUMN exported INTEGER;
+  '''
+];
+
 class DatabaseHelper {
   //Create a private constructor
   DatabaseHelper._();
@@ -46,12 +55,35 @@ class DatabaseHelper {
 
       // Write and flush the bytes written
       await File(path).writeAsBytes(bytes, flush: true);
-    } else {
-      print("Opening existing database");
+
+      var db = await openDatabase(
+        path,
+        readOnly: false,
+      );
+
+      print('Database version: ${await db.getVersion()}');
+
+      // TODO: run all migrations
+      return db;
     }
 
-    // Open the database
-    var db = await openDatabase(path, readOnly: true);
+    print("Opening existing database");
+    var db = await openDatabase(
+      path,
+      readOnly: false,
+      version: 2, // match with # of migrations
+      onUpgrade: (db, oldVersion, newVersion) async {
+        print('Upgrading database from $oldVersion to $newVersion');
+        if (oldVersion == 0) {
+          oldVersion = 1;
+        }
+        for (var i = oldVersion - 1; i < newVersion; i++) {
+          print('Running migration $migrations[i]');
+          await db.execute(migrations[i]);
+          db.setVersion(newVersion);
+        }
+      },
+    );
 
     return db;
   }
@@ -114,5 +146,28 @@ class DatabaseHelper {
       record.toMap(), // Convert SurveyRecord object to a Map
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+  }
+
+  Future<int> setAsExported(int id) async {
+    final db = await database;
+
+    return await db.update(
+      'survey',
+      {'exported': 1},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<List<SurveyRecord>> getNonExportedRecords() async {
+    final db = await database;
+
+    final result = await db.query(
+      'survey',
+      where: 'exported = ?',
+      whereArgs: [0],
+    );
+
+    return result.map((e) => SurveyRecord.fromMap(e)).toList();
   }
 }

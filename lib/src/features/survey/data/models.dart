@@ -19,6 +19,8 @@ class SurveyRecord {
   final String city;
   final String placeCategory;
   final String comment;
+  final DateTime createdAt = DateTime.now();
+  final bool exported = false;
 
   SurveyRecord({
     required this.placeName,
@@ -31,12 +33,25 @@ class SurveyRecord {
 
   Map<String, dynamic> toMap() {
     return {
-      'placeName': placeName,
+      'place_name': placeName,
       'contact': contact,
       'location': location,
       'city': city,
-      'placeCategory': placeCategory,
+      'place_category': placeCategory,
       'comment': comment,
+      'created_at': createdAt.toIso8601String(),
+      'exported': exported ? 1 : 0,
     };
+  }
+
+  factory SurveyRecord.fromMap(Map<String, dynamic> map) {
+    return SurveyRecord(
+      placeName: map['place_name'],
+      contact: map['contact'],
+      location: map['location'],
+      city: map['city'],
+      placeCategory: map['place_category'],
+      comment: map['comment'],
+    );
   }
 }

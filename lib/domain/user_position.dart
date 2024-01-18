@@ -31,6 +31,7 @@ class UserPositionReport {
   final double latitude;
   final double longitude;
   final DateTime timestamp;
+  final String battery;
 
   final PhoneMeta phoneMeta;
 
@@ -40,6 +41,7 @@ class UserPositionReport {
     required this.latitude,
     required this.longitude,
     required this.timestamp,
+    required this.battery,
     required this.phoneMeta,
   });
 }

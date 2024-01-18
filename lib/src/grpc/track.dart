@@ -35,14 +35,13 @@ class NawaltTrackingClientGRPC {
       ),
       clientId: "",
       metadata: PhoneMetadata(
-        deviceId: request.phoneMeta.id,
-        brand: request.phoneMeta.brand,
-        model: request.phoneMeta.model,
-        os: request.phoneMeta.os,
-        appVersion: request.phoneMeta.appVersion,
-        carrier: request.phoneMeta.carrier,
-        battery: 30,
-      ),
+          deviceId: request.phoneMeta.id,
+          brand: request.phoneMeta.brand,
+          model: request.phoneMeta.model,
+          os: request.phoneMeta.os,
+          appVersion: request.phoneMeta.appVersion,
+          carrier: request.phoneMeta.carrier,
+          battery: int.parse(request.battery)),
 
       timestamp: Timestamp.fromDateTime(request.timestamp),
     );

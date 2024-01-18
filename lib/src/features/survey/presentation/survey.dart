@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:trace/src/features/current_meta/data/current_meta.dart';
-import 'package:trace/src/features/current_meta/service/current_meta_service.dart';
 import 'package:trace/src/features/survey/data/db.dart';
 import 'package:trace/src/features/survey/data/models.dart';
 
@@ -27,9 +26,26 @@ class SurveyScreenState extends ConsumerState<SurveyScreen> {
     // ref.read(counterProvider);
   }
 
+  @override
+  void dispose() {
+    print("overriding dispose");
+    super.dispose();
+  }
+
+  void _resetForm() {
+    _formKey.currentState?.reset();
+    placeValue.clear();
+    ownerValue.clear();
+    coordinatesValue.clear();
+    commentsValue.clear();
+
+    placeTypeValue = _placeType.first;
+    cityValue = null;
+  }
+
   final _formKey = GlobalKey<FormState>();
 
-  String placeTypeValue = _placeType.first;
+  String? placeTypeValue = _placeType.first;
   String? cityValue;
   TextEditingController placeValue = TextEditingController();
   TextEditingController ownerValue = TextEditingController();
@@ -38,14 +54,17 @@ class SurveyScreenState extends ConsumerState<SurveyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final FocusNode focus1 = FocusNode();
+    final FocusNode focus2 = FocusNode();
+
     var metaService = ref.watch(currentMetaRepositoryProvider);
     return Scaffold(
-      body: Form(
-        key: _formKey,
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(14.0),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Form(
+              key: _formKey,
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -62,11 +81,18 @@ class SurveyScreenState extends ConsumerState<SurveyScreen> {
                   ),
                   TypeAheadField<String>(
                     controller: placeValue,
-                    suggestionsCallback: (search) =>
-                        DatabaseHelper.instance.getPlaceNames(query: search),
+                    hideOnEmpty: true,
+                    suggestionsCallback: (search) {
+                      if (search.isNotEmpty) {
+                        return DatabaseHelper.instance
+                            .getPlaceNames(query: search);
+                      }
+                      return [];
+                    },
                     builder: (context, controller, focusNode) {
                       return TextFormField(
                         controller: controller,
+                        autofocus: false,
                         focusNode: focusNode,
                         decoration: const InputDecoration(
                           hintText: 'Inserte Nombre de Farmacia',
@@ -91,11 +117,18 @@ class SurveyScreenState extends ConsumerState<SurveyScreen> {
                   ),
                   TypeAheadField<String>(
                     controller: ownerValue,
-                    suggestionsCallback: (search) =>
-                        DatabaseHelper.instance.getPlaceNames(query: search),
+                    hideOnEmpty: true,
+                    suggestionsCallback: (search) {
+                      if (search.isNotEmpty) {
+                        return DatabaseHelper.instance
+                            .getPlaceNames(query: search);
+                      }
+                      return [];
+                    },
                     builder: (context, controller, focusNode) {
                       return TextFormField(
                         controller: controller,
+                        autofocus: false,
                         focusNode: focusNode,
                         decoration: const InputDecoration(
                           hintText: 'Inserte Nombre de Propietario',
@@ -131,7 +164,6 @@ class SurveyScreenState extends ConsumerState<SurveyScreen> {
                       ElevatedButton(
                         onPressed: () async {
                           final loc = await metaService.currentLocation();
-                          print(loc);
                           coordinatesValue.text =
                               "${loc.latitude}, ${loc.longitude}";
                         },
@@ -142,7 +174,7 @@ class SurveyScreenState extends ConsumerState<SurveyScreen> {
                   const SizedBox(
                     height: 15,
                   ),
-                  DropdownButton(
+                  DropdownButtonFormField(
                     hint: const Text('Seleccione una opción'),
                     value: placeTypeValue,
                     onChanged: (newValue) {
@@ -165,7 +197,7 @@ class SurveyScreenState extends ConsumerState<SurveyScreen> {
                       future: DatabaseHelper.instance.getCities(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return DropdownButton(
+                          return DropdownButtonFormField(
                             hint: const Text('Seleccione una opción'),
                             value: cityValue,
                             onChanged: (newValue) {
@@ -192,6 +224,7 @@ class SurveyScreenState extends ConsumerState<SurveyScreen> {
                     height: 15,
                   ),
                   TextFormField(
+                    controller: commentsValue,
                     maxLines: 4,
                     decoration: const InputDecoration(
                       hintText: 'Comentarios',
@@ -206,18 +239,45 @@ class SurveyScreenState extends ConsumerState<SurveyScreen> {
                   const SizedBox(
                     height: 15,
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Validate returns true if the form is valid, or false otherwise.
-                      if (_formKey.currentState!.validate()) {
-                        // If the form is valid, display a snackbar. In the real world,
-                        // you'd often call a server or save the information in a database.
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Processing Data')),
-                        );
-                      }
-                    },
-                    child: const Text('Enviar'),
+                  Row(
+                    children: [
+                      ElevatedButton(
+                          onPressed: () {
+                            _resetForm();
+                          },
+                          child: const Text('Limpiar')),
+                      const Spacer(),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blueAccent,
+                            foregroundColor: Colors.white),
+                        onPressed: () async {
+                          // Validate returns true if the form is valid, or false otherwise.
+                          if (_formKey.currentState!.validate()) {
+                            await DatabaseHelper.instance
+                                .insertSurveyRecord(SurveyRecord(
+                              placeName: placeValue.text,
+                              contact: ownerValue.text,
+                              location: coordinatesValue.text,
+                              placeCategory: placeTypeValue!,
+                              city: cityValue!,
+                              comment: commentsValue.text,
+                            ));
+
+                            // If the form is valid, display a snackbar. In the real world,
+                            // you'd often call a server or save the information in a database.
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Encuesta guardada')),
+                            );
+
+                            _resetForm();
+                            FocusScope.of(context).unfocus();
+                          }
+                        },
+                        child: const Text('Enviar'),
+                      ),
+                    ],
                   ),
                 ],
               ),

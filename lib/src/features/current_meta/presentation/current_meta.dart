@@ -34,7 +34,7 @@ class _CurrentMetaScreenState extends ConsumerState<CurrentMetaScreen> {
               children: [
                 const Text("Actions"),
                 FilledButton(
-                    child: const Text("Get Current Meta"),
+                    child: const Text("Revisar meta data"),
                     onPressed: () => {
                           metaRepository.currentMeta().then((value) => {
                                 setState(() {
@@ -43,22 +43,40 @@ class _CurrentMetaScreenState extends ConsumerState<CurrentMetaScreen> {
                               })
                         }),
                 FilledButton(
-                    child: const Text("Record Position"),
-                    onPressed: () => metaService.recordPosition()),
+                    child: const Text("Registrar Position Actual"),
+                    onPressed: () {
+                      metaService.recordPosition();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Position registrada')),
+                      );
+                    }),
                 FilledButton(
-                    child: const Text("Start Background"),
-                    onPressed: () async => {
-                          if (await FlutterBackgroundService().isRunning() ==
-                              false)
-                            {FlutterBackgroundService().startService()}
-                        }),
+                    child: const Text("Check-in"),
+                    onPressed: () async {
+                      if (await FlutterBackgroundService().isRunning() ==
+                          false) {
+                        FlutterBackgroundService().startService();
+                      }
+                      if (!context.mounted) return;
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Checkin registrado')),
+                      );
+                    }),
                 FilledButton(
-                    child: const Text("Stop Background"),
-                    onPressed: () async => {
-                          if (await FlutterBackgroundService().isRunning() ==
-                              true)
-                            {FlutterBackgroundService().invoke("stopService")}
-                        }),
+                    child: const Text("Check-out"),
+                    onPressed: () async {
+                      if (await FlutterBackgroundService().isRunning() ==
+                          true) {
+                        FlutterBackgroundService().invoke("stopService");
+                      }
+
+                      if (!context.mounted) return;
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Checkout registrado')),
+                      );
+                    }),
               ],
             ),
             const SizedBox(height: 20),

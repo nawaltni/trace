@@ -44,6 +44,7 @@ class CurrentMetaService {
           latitude: meta.location.latitude,
           longitude: meta.location.longitude,
           timestamp: DateTime.now(),
+          battery: meta.battery,
           phoneMeta: phoneMeta);
 
       final auth = await _authRepository.getAuthData();
