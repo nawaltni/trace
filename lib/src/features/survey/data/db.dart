@@ -170,4 +170,15 @@ class DatabaseHelper {
 
     return result.map((e) => SurveyRecord.fromMap(e)).toList();
   }
+
+  Future<int> markSurveyAsExported(int id) async {
+    final db = await database;
+
+    return await db.update(
+      'survey',
+      {'exported': 1},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
 }

@@ -13,26 +13,31 @@ class City {
 }
 
 class SurveyRecord {
+  final int id;
   final String placeName;
   final String contact;
   final String location;
   final String city;
   final String placeCategory;
   final String comment;
-  final DateTime createdAt = DateTime.now();
   final bool exported = false;
+  final DateTime createdAt;
 
   SurveyRecord({
+    this.id = 0,
     required this.placeName,
     required this.contact,
     required this.location,
     required this.city,
     required this.placeCategory,
     required this.comment,
+    required this.createdAt,
   });
 
   Map<String, dynamic> toMap() {
     return {
+      // don't set the id, it will be auto-generated
+      // 'id': id,
       'place_name': placeName,
       'contact': contact,
       'location': location,
@@ -45,13 +50,23 @@ class SurveyRecord {
   }
 
   factory SurveyRecord.fromMap(Map<String, dynamic> map) {
-    return SurveyRecord(
+    var createdAt = DateTime.tryParse(map['created_at']);
+    if (createdAt == null) {
+      print('failed to parse date: ${map['created_at']}');
+    }
+    createdAt ??= DateTime.now();
+
+    var record = SurveyRecord(
+      id: map['id'],
       placeName: map['place_name'],
       contact: map['contact'],
       location: map['location'],
       city: map['city'],
       placeCategory: map['place_category'],
       comment: map['comment'],
+      createdAt: createdAt,
     );
+
+    return record;
   }
 }

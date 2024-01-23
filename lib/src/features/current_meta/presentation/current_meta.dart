@@ -4,6 +4,7 @@ import 'package:trace/src/common_widgets/common_drawer.dart';
 import 'package:trace/src/features/current_meta/data/current_meta.dart';
 import 'package:trace/src/features/current_meta/service/current_meta_service.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:trace/src/features/survey/service/service.dart';
 
 class CurrentMetaScreen extends ConsumerStatefulWidget {
   const CurrentMetaScreen({super.key});
@@ -19,6 +20,7 @@ class _CurrentMetaScreenState extends ConsumerState<CurrentMetaScreen> {
   Widget build(BuildContext context) {
     var metaRepository = ref.watch(currentMetaRepositoryProvider);
     var metaService = ref.watch(currentMetaServiceProvider);
+    var surveyService = ref.watch(surveyServiceProvider);
     // bool background = ref.watch(backgroundProvider).state;
     return Scaffold(
       appBar: AppBar(
@@ -77,6 +79,16 @@ class _CurrentMetaScreenState extends ConsumerState<CurrentMetaScreen> {
                         const SnackBar(content: Text('Checkout registrado')),
                       );
                     }),
+                FilledButton(
+                    onPressed: () async {
+                      var syncedRecords = await surveyService.exportSurveys();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content: Text(
+                                'Se sincronizaron $syncedRecords registros')),
+                      );
+                    },
+                    child: const Text("Sincronizar Encuesta"))
               ],
             ),
             const SizedBox(height: 20),

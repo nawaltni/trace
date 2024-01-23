@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:trace/src/common_widgets/common_drawer.dart';
 import 'package:trace/src/features/current_meta/data/current_meta.dart';
 import 'package:trace/src/features/survey/data/db.dart';
 import 'package:trace/src/features/survey/data/models.dart';
@@ -59,6 +60,10 @@ class SurveyScreenState extends ConsumerState<SurveyScreen> {
 
     var metaService = ref.watch(currentMetaRepositoryProvider);
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Encuesta"),
+      ),
+      drawer: const CommonDrawer(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -262,6 +267,7 @@ class SurveyScreenState extends ConsumerState<SurveyScreen> {
                               placeCategory: placeTypeValue!,
                               city: cityValue!,
                               comment: commentsValue.text,
+                              createdAt: DateTime.now(),
                             ));
 
                             // If the form is valid, display a snackbar. In the real world,
